@@ -1,0 +1,35 @@
+plugins {
+    id 'application'
+    id 'java'
+}
+
+java {
+    toolchain {
+        languageVersion.set(JavaLanguageVersion.of(21)) // Correct way
+    }
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    // Include all JARs in the 'libs' folder
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+}
+
+application {
+    mainClass = 'org.example.App' // Replace with your fully qualified main class
+}
+
+// Allow Scanner input from console in Gradle
+tasks.withType(JavaExec) {
+    standardInput = System.in
+}
+tasks.withType(Jar) {
+    manifest {
+        attributes(
+                'Main-Class': application.mainClass
+        )
+    }
+}
